@@ -244,17 +244,12 @@ public class NoteServiceImpliment implements NoteService{
 	public boolean reminder(String time, String token, long noteid) {
 		long id = jwt.idDetails(token);
 		User user = userrepo.findOneById(id);
-		if(user != null) {
 			Notes note= repos.findByid(noteid);
-			if(note != null) {
+			if(user != null && note != null) {
 				note.setReminder(time);
 				repos.save(note);
 				return true;
 			}
-			
-			return true;
-		}
-		
 		return false;
 	}
 

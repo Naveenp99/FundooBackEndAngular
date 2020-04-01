@@ -5,6 +5,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import com.bdlabz.fundoo.entitymodel.Notes;
+
 @Component
 public class Mail {
 
@@ -23,5 +25,14 @@ public class Mail {
 		mailSender.send(mess);
 	}
 	
+	public void sendNotesColl(String mail,  Notes notes) {
+		System.out.println("all notes: "+ notes);
+		SimpleMailMessage mess = new SimpleMailMessage();
+		mess.setFrom("naveenpagrahara@gmail.com");
+		mess.setTo(mail);
+		mess.setSubject("Notes");
+		mess.setText(notes.toString());
+		mailSender.send(mess);
+	}
 	
 }

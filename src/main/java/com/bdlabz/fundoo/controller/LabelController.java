@@ -29,10 +29,11 @@ public class LabelController {
 	@Autowired
 	LabelService service;
 	
-	@PostMapping(value = "/create")
+	@PostMapping(value = "/create/{noteId}")
 	public ResponseEntity<Response> createLabel(@RequestBody LabelDto dto,
+			                                    @PathVariable(value = "noteId") long noteId,
 			                                    @RequestHeader(value = "token") String token) {
-		     boolean is_created = service.createLabel(dto, token); 
+		     boolean is_created = service.createLabel(dto, token, noteId); 
 		if(is_created == true) 
 			return ResponseEntity.ok().body(new Response("Created Successfully", 200, dto));
 		else
@@ -73,15 +74,15 @@ public class LabelController {
 		
 	}
 	
-	@GetMapping(value = "/getallnote/{labelid}")
-	public ResponseEntity<Response> getAllNote(@Valid @RequestHeader(value = "token") String token,
-			@PathVariable(value = "labelid") long labelid) {	                                    
-		     List<Notes> getAll = service.getAllNotes(token, labelid); 
-		if(getAll != null) 
-			return ResponseEntity.ok().body(new Response(" Successfully", 200, getAll));
-		else
-			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
-		
-	}
+//	@GetMapping(value = "/getallnote/{labelid}")
+//	public ResponseEntity<Response> getAllNote(@Valid @RequestHeader(value = "token") String token,
+//			@PathVariable(value = "labelid") long labelid) {	                                    
+//		     List<Notes> getAll = service.getAllNotes(token, labelid); 
+//		if(getAll != null) 
+//			return ResponseEntity.ok().body(new Response(" Successfully", 200, getAll));
+//		else
+//			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
+//		
+//	}
 	
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bdlabz.fundoo.Dto.CollaboratorDto;
 import com.bdlabz.fundoo.entitymodel.Collaborator;
+import com.bdlabz.fundoo.entitymodel.Notes;
 import com.bdlabz.fundoo.service.CollaboratorService;
 import com.bdlabz.fundoo.util.Response;
 
@@ -30,9 +31,9 @@ public class CollaboratorController {
 	public ResponseEntity<Response> collaborator(@RequestBody CollaboratorDto dto, 
 			                                           @PathVariable(value = "noteid") long noteid, 
 			                                           @RequestHeader(value = "token") String token) {
-		boolean is_collaborator = service.createCollaborator(token, noteid, dto);
-		if(is_collaborator == true)
-			return ResponseEntity.ok().body(new Response("Created Successfully", 200));
+		Notes is_collaborator = service.createCollaborator(token, noteid, dto);
+		if(is_collaborator != null)
+			return ResponseEntity.ok().body(new Response("Created Successfully", 200, is_collaborator));
 		else
 			return ResponseEntity.ok().body(new Response(" UnSuccessfull", 400));
 	}

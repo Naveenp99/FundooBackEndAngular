@@ -15,6 +15,7 @@ import com.bdlabz.fundoo.repository.NotesRepository;
 import com.bdlabz.fundoo.repository.UserRepository;
 import com.bdlabz.fundoo.service.CollaboratorService;
 import com.bdlabz.fundoo.util.Jwt;
+import com.bdlabz.fundoo.util.Mail;
 
 @Service
 public class CollaboratorServiceImpliment implements CollaboratorService{
@@ -30,9 +31,12 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 	
 	@Autowired
 	Jwt jwt;
+
+	@Autowired
+	Mail ma;
 	
 	@Override
-	public boolean createCollaborator(String token, long noteid, CollaboratorDto dto) {
+	public Notes createCollaborator(String token, long noteid, CollaboratorDto dto) {
 		
 		try {
 			long mail = jwt.idDetails(token);
@@ -42,15 +46,17 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 				Collaborator collab = new Collaborator();
 				collab.setCollaborate_email_to(dto.getCollaborate_to_email());
 				collab.setNote(note);
+		ma.sendNotesColl(dto.getCollaborate_to_email(), note);
 				colrep.save(collab);
-				return true;
+				
+				return note;
 			}
 			
 		} catch (JWTVerificationException | IllegalArgumentException  e) {
 			e.printStackTrace();
 		}
 		
-		return false;
+		return null;
 	}
 
 	@Override

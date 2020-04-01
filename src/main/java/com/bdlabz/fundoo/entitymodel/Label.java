@@ -23,6 +23,9 @@ public class Label {
 	@GeneratedValue
 	private long id;
 	
+	@Column(name = "notes_id")
+	private long noteId;
+	
 	@Column(name = "label_title")
 	private String title;
 	
@@ -60,6 +63,14 @@ public class Label {
 
 	public void setNote(List<Notes> note) {
 		this.note = note;
+	}
+
+	public long getNoteId() {
+		return noteId;
+	}
+
+	public void setNoteId(long noteId) {
+		this.noteId = noteId;
 	}
 	
 	

@@ -32,14 +32,16 @@ public class LabelServiceImpliment implements LabelService {
 	LabelRepository repos;
 
 	@Override
-	public boolean createLabel(LabelDto dto, String token) {
+	public boolean createLabel(LabelDto dto, String token, long nid) {
 
 		try {
 			long mail = jwt.idDetails(token);
 			User user = userrep.findOneById(mail);
-			if (user != null) {
+			Notes notes = noterep.findByid(nid);
+			if (user != null && notes != null) {
 				Label label = new Label();
 				label.setTitle(dto.getTitlename());
+				label.setNoteId(nid);
 				label.setUser(user);
 				repos.save(label);
 				return true;
@@ -102,21 +104,21 @@ public class LabelServiceImpliment implements LabelService {
 		return null;
 	}
 
-	@Override
-	public List<Notes> getAllNotes(String token, long labelid) {
-		try {
-			long mail = jwt.idDetails(token);
-			User user = userrep.findOneById(mail);
-			Label label = repos.findByid(labelid);
-			
-			if (user != null && label != null) {
-          return label.getNote();
-          
-			}
-		} catch (JWTVerificationException | IllegalArgumentException  e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	@Override
+//	public List<Notes> getAllNotes(String token, long labelid) {
+//		try {
+//			long mail = jwt.idDetails(token);
+//			User user = userrep.findOneById(mail);
+//			Label label = repos.findByid(labelid);
+//			
+//			if (user != null && label != null) {
+//          return label.getNote();
+//          
+//			}
+//		} catch (JWTVerificationException | IllegalArgumentException  e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 }

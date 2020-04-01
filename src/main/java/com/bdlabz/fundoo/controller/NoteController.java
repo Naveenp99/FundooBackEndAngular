@@ -138,10 +138,10 @@ public class NoteController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
 		}
 		
-	@PostMapping(value = "/reminder/{noteid}")
+	@PostMapping(value = "/reminder/{noteid}/{time}")
 	public ResponseEntity<Response> reminder(@RequestHeader(value = "token") String token,
 			@PathVariable(value = "noteid") long noteid,
-			@RequestParam(value = "time") String time) {
+			@PathVariable(value = "time") String time) {
 		boolean reminder = service.reminder(time, token, noteid);
 		if(reminder == true)
 			return  ResponseEntity.status(HttpStatus.CREATED).body(new Response("Updated Successfully", 200));
