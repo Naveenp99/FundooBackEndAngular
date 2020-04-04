@@ -1,9 +1,7 @@
 package com.bdlabz.fundoo.repository;
 
 import java.util.List;
-
 import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -52,4 +50,11 @@ public interface NotesRepository extends JpaRepository<Notes, Long> {
 	@Modifying
 	@Query(value = "update notes_table set notes_is_pin = :status where user_id = :UserId and notes_id = :noteId", nativeQuery = true)
 	void setPin(boolean status, long noteId, long UserId);
+	
+	@Query(value = "select * from notes_table where notes_title LIKE %:title% OR notes_takeanote LIKE %:title%", nativeQuery = true)
+	List<Notes> getNotesByTitle( String title);
+
+     @Query(value = "select * from notes_table where user_id = :id and note_reminder IS NOT NULL", nativeQuery = true)
+	List<Notes> getAllRemiders( long id);
+
 }

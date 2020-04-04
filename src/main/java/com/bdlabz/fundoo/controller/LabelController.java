@@ -1,10 +1,7 @@
 package com.bdlabz.fundoo.controller;
 
 import java.util.List;
-
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bdlabz.fundoo.Dto.LabelDto;
 import com.bdlabz.fundoo.entitymodel.Label;
-import com.bdlabz.fundoo.entitymodel.Notes;
 import com.bdlabz.fundoo.service.LabelService;
 import com.bdlabz.fundoo.util.Response;
 
@@ -29,11 +25,10 @@ public class LabelController {
 	@Autowired
 	LabelService service;
 	
-	@PostMapping(value = "/create/{noteId}")
+	@PostMapping(value = "/create")
 	public ResponseEntity<Response> createLabel(@RequestBody LabelDto dto,
-			                                    @PathVariable(value = "noteId") long noteId,
 			                                    @RequestHeader(value = "token") String token) {
-		     boolean is_created = service.createLabel(dto, token, noteId); 
+		     boolean is_created = service.createLabel(dto, token); 
 		if(is_created == true) 
 			return ResponseEntity.ok().body(new Response("Created Successfully", 200, dto));
 		else
@@ -54,7 +49,7 @@ public class LabelController {
 	
 	@PutMapping(value = "/update/{id}")
 	public ResponseEntity<Response> updateORchangeLabel(@PathVariable(value = "id") long id,
-			@RequestHeader(value = "token") String token,
+			                                            @RequestHeader(value = "token") String token,
 			                                    @RequestBody LabelDto dto) {
 		     boolean is_updated = service.updateLabel(token, id, dto); 
 		if(is_updated == true) 
@@ -69,6 +64,16 @@ public class LabelController {
 		     List<Label> getAll = service.getAllLabel(token); 
 		if(getAll != null) 
 			return ResponseEntity.ok().body(new Response(" Successfully", 200, getAll));
+		else
+			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
+		
+	}
+	@GetMapping(value = "/getsinglelabel/{lid}")
+	public ResponseEntity<Response> getSingleLabel(@Valid @RequestHeader(value = "token") String token,
+			                                       @PathVariable(value = "lid") long lid  ) {	                                    
+		     Label label = service.getsingleLabel(token, lid); 
+		if(label != null) 
+			return ResponseEntity.ok().body(new Response(" Successfully", 200, label));
 		else
 			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
 		

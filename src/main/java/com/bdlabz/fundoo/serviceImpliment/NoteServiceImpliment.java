@@ -319,6 +319,29 @@ public class NoteServiceImpliment implements NoteService{
 		}
 		return null;
 	}
+
+	@Override
+	public List<Notes> getNotesByTitle( String token, String title) {
+	    long userId = jwt.idDetails(token);
+		User user = userrepo.findOneById(userId);
+		List<Notes> notes = repos.getNotesByTitle(title);
+		if(user != null && notes != null) {
+			 return notes;
+		}
+		return null;
+	}
+
+	@Override
+	public List<Notes> getAllReminders(String token) {
+		long uId = jwt.idDetails(token);
+		User user = userrepo.findOneById(uId);
+		List<Notes> reminders =	repos.getAllRemiders(uId);
+		if( user != null && reminders != null) {
+             return reminders;
+		
+		}
+		return null;
+	}
 	
 	
 }

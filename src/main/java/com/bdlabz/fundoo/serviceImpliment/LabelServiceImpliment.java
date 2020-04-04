@@ -32,16 +32,14 @@ public class LabelServiceImpliment implements LabelService {
 	LabelRepository repos;
 
 	@Override
-	public boolean createLabel(LabelDto dto, String token, long nid) {
+	public boolean createLabel(LabelDto dto, String token) {
 
 		try {
 			long mail = jwt.idDetails(token);
 			User user = userrep.findOneById(mail);
-			Notes notes = noterep.findByid(nid);
-			if (user != null && notes != null) {
+			if (user != null) {
 				Label label = new Label();
 				label.setTitle(dto.getTitlename());
-				label.setNoteId(nid);
 				label.setUser(user);
 				repos.save(label);
 				return true;
@@ -95,13 +93,24 @@ public class LabelServiceImpliment implements LabelService {
 			long mail = jwt.idDetails(token);
 			User user = userrep.findOneById(mail);
 			if (user != null) {
-				List<Label> label = repos.findAll();
+				List<Label> label = repos.getAllLabels();
 				return label;
 			}
 		} catch (JWTVerificationException | IllegalArgumentException  e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Label getsingleLabel(String token, long labelId) {
+		long userId = jwt.idDetails(token);
+		User user = userrep.findOneById(userId);
+		Label label = repos.getAllLabelById(labelId);
+		if(user != null && label != null) {
+		return label;
+		}
+;		return null;
 	}
 
 //	@Override

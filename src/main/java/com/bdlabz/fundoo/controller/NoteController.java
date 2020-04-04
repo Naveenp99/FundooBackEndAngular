@@ -115,7 +115,7 @@ public class NoteController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccess", 400));
 	}
 	
-	@PostMapping(value = "/updatenote/{noteid}")
+	@PutMapping(value = "/updatenote/{noteid}")
 	public ResponseEntity<Response> updateNotes(@RequestBody NoteDto dto, 
 			@RequestHeader(value = "token") String token,
 			@PathVariable(value = "noteid") long noteid) {
@@ -201,5 +201,26 @@ public class NoteController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Successfull", 200, notes));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
+	}
+	
+	@GetMapping(value = "/searchByTitle/{title}")
+	public ResponseEntity<Response> searchByTitle( @RequestHeader(value = "token") String token, 
+			                                       @PathVariable(value = "title") String title) {
+		
+		     List<Notes> notes = service.getNotesByTitle(token, title);
+		     if( notes != null) 
+		    	 return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Successfull", 200, notes));
+				else
+				 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));	 
+		     
+	}
+	
+	@GetMapping(value = "/allreminders") 
+	public ResponseEntity<Response> getAllReminders( @RequestHeader(value = "token") String token){
+	List<Notes> reminders = service.getAllReminders(token);
+	if( reminders != null) 
+   	 return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Successfull", 200, reminders));
+		else
+		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
 	}
 }

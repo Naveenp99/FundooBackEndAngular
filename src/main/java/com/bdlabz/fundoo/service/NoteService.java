@@ -41,4 +41,8 @@ public interface NoteService {
 	List<Notes> getAllArchiveNotes(String token);
 	
 	List<Notes> getAllunArchiveNotes(String token);
+	
+	List<Notes> getNotesByTitle( String token, String title);
+	
+	List<Notes> getAllReminders( String token);
 }
