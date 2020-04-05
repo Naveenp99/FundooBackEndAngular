@@ -56,5 +56,10 @@ public interface NotesRepository extends JpaRepository<Notes, Long> {
 
      @Query(value = "select * from notes_table where user_id = :id and note_reminder IS NOT NULL", nativeQuery = true)
 	List<Notes> getAllRemiders( long id);
+     
+     @Transactional
+     @Modifying
+     @Query(value = "update notes_table set note_reminder = NULL where user_id = :userId AND notes_id = :noteId AND note_reminder = :reminder", nativeQuery = true)
+     void deleteReminder(long userId, long noteId, String reminder);
 
 }

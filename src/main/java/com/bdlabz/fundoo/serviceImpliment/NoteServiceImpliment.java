@@ -342,6 +342,18 @@ public class NoteServiceImpliment implements NoteService{
 		}
 		return null;
 	}
+
+	@Override
+	public boolean deleteReminder(String token, long noteId, String reminder) {
+		long userId = jwt.idDetails(token);
+		User user = userrepo.findOneById(userId);
+		Notes notes = repos.findByid(noteId);
+		if(user != null && notes != null) {
+			   repos.deleteReminder(userId, noteId, reminder); 
+			   return true;
+		}
+		return false;
+	}
 	
 	
 }

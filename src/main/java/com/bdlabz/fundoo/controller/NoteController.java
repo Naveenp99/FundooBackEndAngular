@@ -223,4 +223,15 @@ public class NoteController {
 		else
 		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
 	}
+	
+	@PutMapping(value = "/deletereminder/{noteId}/{reminder}")
+	public ResponseEntity<Response> deleteReminder( @RequestHeader(value = "token") String token,
+			                                        @PathVariable(value = "noteId") long noteId,
+			                                        @PathVariable(value = "reminder") String reminder) {
+		boolean is_updated = service.deleteReminder(token, noteId, reminder);
+		if(is_updated == true)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Successfull", 200, is_updated));
+		else
+		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
+	}
 }

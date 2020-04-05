@@ -45,4 +45,7 @@ public interface NoteService {
 	List<Notes> getNotesByTitle( String token, String title);
 	
 	List<Notes> getAllReminders( String token);
+	
+	boolean deleteReminder( String token, long noteId, String reminder);
+	
 }
