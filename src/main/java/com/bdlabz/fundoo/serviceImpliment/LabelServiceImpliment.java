@@ -113,6 +113,30 @@ public class LabelServiceImpliment implements LabelService {
 ;		return null;
 	}
 
+	@Override
+	public boolean updatenoteIdinLabel(String token, long noteId, long labelId) {
+		long userId = jwt.idDetails(token);
+		User user = userrep.findOneById(userId);
+		if(user != null) {
+			repos.updateNoteId(labelId, noteId); 
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<Notes> getLabelBytitle(String token, String title) {
+		long userId = jwt.idDetails(token);
+		User user = userrep.findOneById(userId);
+	Label labels = repos.getLabelsByTitle(title);
+		if(user != null && labels != null) {
+			long noteId = labels.getNoteId();
+			List<Notes> notes = noterep.getAllNotesinLabel(userId, noteId);
+			return notes;
+		}
+		return null;
+	}
+
 //	@Override
 //	public List<Notes> getAllNotes(String token, long labelid) {
 //		try {

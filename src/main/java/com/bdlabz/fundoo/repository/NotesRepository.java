@@ -11,6 +11,9 @@ import com.bdlabz.fundoo.entitymodel.Notes;
 @Repository
 public interface NotesRepository extends JpaRepository<Notes, Long> {
 
+	@Query(value = "select * from notes_table where user_id=:userId and notes_id = :noteId", nativeQuery = true)
+	List<Notes> getAllNotesinLabel(Long userId, long noteId);
+	
 	Notes findByid(long id);
 	
 	@Query(value = "select * from notes_table where user_id=:userId", nativeQuery = true)

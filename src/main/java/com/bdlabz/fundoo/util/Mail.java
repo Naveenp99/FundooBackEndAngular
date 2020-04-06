@@ -33,6 +33,7 @@ public class Mail {
 		mess.setSubject("Notes");
 		mess.setText(notes.toString());
 		mailSender.send(mess);
+
 	}
 	
 }

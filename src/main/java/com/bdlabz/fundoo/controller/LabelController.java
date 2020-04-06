@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bdlabz.fundoo.Dto.LabelDto;
 import com.bdlabz.fundoo.entitymodel.Label;
+import com.bdlabz.fundoo.entitymodel.Notes;
 import com.bdlabz.fundoo.service.LabelService;
 import com.bdlabz.fundoo.util.Response;
 
@@ -78,6 +79,32 @@ public class LabelController {
 			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
 		
 	}
+	
+	@PutMapping( value = "/updatenoteId/{noteId}/{labelId}")
+	public ResponseEntity<Response> updateNoteId( @RequestHeader(value = "token") String token,
+			@PathVariable(value = "noteId") long noteId,
+			@PathVariable(value = "labelId") long labelId) {
+	boolean is_updated = service.updatenoteIdinLabel(token, noteId, labelId);
+		if(is_updated == true)
+			return ResponseEntity.ok().body(new Response(" Successfully", 200, is_updated));
+		else
+			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
+	}
+	
+	@GetMapping( value = "/getNotesinLabel/{title}")
+	public ResponseEntity<Response> getNotesinLabel( @RequestHeader(value = "token") String token,
+			                                         @PathVariable(value = "title") String title) {
+		List<Notes> notes = service.getLabelBytitle(token, title);
+		if( notes != null)
+			return ResponseEntity.ok().body(new Response(" Successfully", 200, notes));
+		else
+			return ResponseEntity.ok().body(new Response(" UnSuccessfully", 400, null));
+	}
+	
+	
+	
+	
+	
 	
 //	@GetMapping(value = "/getallnote/{labelid}")
 //	public ResponseEntity<Response> getAllNote(@Valid @RequestHeader(value = "token") String token,

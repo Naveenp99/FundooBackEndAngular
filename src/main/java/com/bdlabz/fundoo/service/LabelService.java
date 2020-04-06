@@ -3,6 +3,7 @@ package com.bdlabz.fundoo.service;
 import java.util.List;
 import com.bdlabz.fundoo.Dto.LabelDto;
 import com.bdlabz.fundoo.entitymodel.Label;
+import com.bdlabz.fundoo.entitymodel.Notes;
 
 public interface LabelService {
 
@@ -17,5 +18,9 @@ public interface LabelService {
 	Label getsingleLabel( String token, long labelId);
 	
 //	List<Notes> getAllNotes(String token, long labelid);
+	
+	boolean updatenoteIdinLabel( String token, long noteId, long labelId);
+	
+	List<Notes> getLabelBytitle( String token, String title);
 	
 }
