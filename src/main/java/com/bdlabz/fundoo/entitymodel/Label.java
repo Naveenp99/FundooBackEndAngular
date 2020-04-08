@@ -26,7 +26,7 @@ public class Label {
 	@Column(name = "notes_id")
 	private long noteId;
 	
-	@Column(name = "label_title")
+	@Column(name = "label_title", unique = true)
 	private String title;
 	
 	@ManyToMany(mappedBy = "label")

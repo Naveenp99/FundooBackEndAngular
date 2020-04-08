@@ -1,6 +1,7 @@
 package com.bdlabz.fundoo.repository;
 
 import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,9 @@ public interface NotesRepository extends JpaRepository<Notes, Long> {
 
 	@Query(value = "select * from notes_table where user_id=:userId and notes_id = :noteId", nativeQuery = true)
 	List<Notes> getAllNotesinLabel(Long userId, long noteId);
+	
+	@Query( value = "SELECT * FROM notes_table WHERE notes_id = :noteId", nativeQuery = true)
+	Notes findOnebyID( long noteId);
 	
 	Notes findByid(long id);
 	
@@ -65,4 +69,8 @@ public interface NotesRepository extends JpaRepository<Notes, Long> {
      @Query(value = "update notes_table set note_reminder = NULL where user_id = :userId AND notes_id = :noteId AND note_reminder = :reminder", nativeQuery = true)
      void deleteReminder(long userId, long noteId, String reminder);
 
+     @Query( value = "select * from notes_table where user_id = :uId and notes_id = :nId", nativeQuery = true)
+     List<Notes> getallNotes( long nId, long uId);
+     
+     
 }

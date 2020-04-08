@@ -234,4 +234,17 @@ public class NoteController {
 		else
 		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
 	}
+	
+	@PostMapping( value = "/addAndshareNotes/{email}/{noteId}")
+	public ResponseEntity<Response> shareNotes( @RequestHeader(value = "token") String token,
+			                                    @PathVariable(value = "noteId") long noteId,
+			                                    @PathVariable(value = "email") String email) {
+		boolean get_Notes = service.getNotes(email, token, noteId);
+		if( get_Notes == true)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Successfull", 200, get_Notes));
+		else
+		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
+	}
+	
+	
 }

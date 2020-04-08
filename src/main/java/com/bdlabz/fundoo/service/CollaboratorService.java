@@ -8,10 +8,10 @@ import com.bdlabz.fundoo.entitymodel.Notes;
 
 public interface CollaboratorService {
 
-	Notes createCollaborator(String token, long noteid, CollaboratorDto dto);
+	List<Notes> createCollaborator(String token, long noteid, CollaboratorDto dto);
 	
 	boolean deleteCollaborator(String token, long id, long cid);
 	
-	List<Collaborator> getAllCollaborator(String token, long id);
+	List<Collaborator> getAllCollaborator(String token, long email);
 	
 }

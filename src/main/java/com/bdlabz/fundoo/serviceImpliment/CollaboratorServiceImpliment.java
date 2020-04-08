@@ -36,20 +36,18 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 	Mail ma;
 	
 	@Override
-	public Notes createCollaborator(String token, long noteid, CollaboratorDto dto) {
+	public List<Notes> createCollaborator(String token, long noteid, CollaboratorDto dto) {
 		
 		try {
 			long mail = jwt.idDetails(token);
 			User user = userrep.findOneById(mail);
-			Notes note = noterep.findByid(noteid);
+			List<Notes> note = noterep.getallNotes(noteid, mail);
 			if(user != null && note != null) {
-				Collaborator collab = new Collaborator();
-				collab.setCollaborate_email_to(dto.getCollaborate_to_email());
-				collab.setNote(note);
-		ma.sendNotesColl(dto.getCollaborate_to_email(), note);
-				colrep.save(collab);
-				
-				return note;
+		User users = userrep.findOneByuserEmail(dto.getCollaborate_to_email());	
+		users.setNotes(note);
+		userrep.save(users);
+		noterep.save(users.getNotes());
+				return users.getNotes();
 			}
 			
 		} catch (JWTVerificationException | IllegalArgumentException  e) {

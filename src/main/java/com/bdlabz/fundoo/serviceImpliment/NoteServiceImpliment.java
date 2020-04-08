@@ -2,21 +2,19 @@ package com.bdlabz.fundoo.serviceImpliment;
 
 
 import java.util.Date;
-
-
 import java.util.List;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bdlabz.fundoo.Dto.NoteDto;
 import com.bdlabz.fundoo.entitymodel.Label;
 import com.bdlabz.fundoo.entitymodel.Notes;
+import com.bdlabz.fundoo.entitymodel.TempNotes;
 import com.bdlabz.fundoo.entitymodel.User;
 import com.bdlabz.fundoo.repository.NotesRepository;
+import com.bdlabz.fundoo.repository.TempNotesRepository;
 import com.bdlabz.fundoo.repository.UserRepository;
 import com.bdlabz.fundoo.service.NoteService;
 import com.bdlabz.fundoo.util.Jwt;
@@ -25,8 +23,10 @@ import com.bdlabz.fundoo.util.Jwt;
 public class NoteServiceImpliment implements NoteService{
 
 	@Autowired
-	UserRepository userrepo;
+	TempNotesRepository temprep; 
 	
+	@Autowired
+	UserRepository userrepo;
 	
 	@Autowired
 	Jwt jwt;
@@ -351,6 +351,34 @@ public class NoteServiceImpliment implements NoteService{
 		if(user != null && notes != null) {
 			   repos.deleteReminder(userId, noteId, reminder); 
 			   return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean getNotes(String email, String token, long noteId) {
+		long userId = jwt.idDetails(token);
+		User user = userrepo.findOneById(userId);
+		if(user != null) {
+		  Notes notes = repos.findOnebyID(noteId);
+			if( notes != null) {
+				User users = userrepo.findOneByuserEmail(email);
+				if(users != null) { 
+					TempNotes temp = new TempNotes();
+					temp.setTitle(notes.getTitle());
+					temp.setTake_a_note(notes.getTake_a_note());
+					temp.setColor(notes.getColor());
+					temp.setArchive(notes.isArchive());
+					temp.setPin(notes.isPin());
+					temp.setTrash(notes.isTrash());
+					temp.setCreate_date(notes.getCreate_date());
+					temp.setUpdate_date(notes.getUpdate_date()); 
+					temp.setReminder(notes.getReminder());
+					temp.setUser(users); 
+					temprep.save(temp);
+					return true;
+				}
+			}
 		}
 		return false;
 	}

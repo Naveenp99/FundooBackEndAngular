@@ -48,4 +48,6 @@ public interface NoteService {
 	
 	boolean deleteReminder( String token, long noteId, String reminder);
 	
+	boolean getNotes( String email, String token, long noteId);
+	
 }

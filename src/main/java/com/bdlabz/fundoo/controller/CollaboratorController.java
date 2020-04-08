@@ -26,12 +26,11 @@ public class CollaboratorController {
 	@Autowired
 	CollaboratorService service;
 	
-	
 	@PostMapping(value = "/create/{noteid}")
 	public ResponseEntity<Response> collaborator(@RequestBody CollaboratorDto dto, 
-			                                           @PathVariable(value = "noteid") long noteid, 
-			                                           @RequestHeader(value = "token") String token) {
-		Notes is_collaborator = service.createCollaborator(token, noteid, dto);
+			                                     @PathVariable(value = "noteid") long noteid, 
+			                                     @RequestHeader(value = "token") String token) {
+		List<Notes> is_collaborator = service.createCollaborator(token, noteid, dto);
 		if(is_collaborator != null)
 			return ResponseEntity.ok().body(new Response("Created Successfully", 200, is_collaborator));
 		else
@@ -50,8 +49,8 @@ public class CollaboratorController {
 	}
 	
 	@GetMapping(value = "/getall/{id}")
-	public ResponseEntity<Response> getAllCollaborator(@PathVariable(value = "id") long id, 
-			@RequestHeader(value = "token") String token) {
+	public ResponseEntity<Response> getAllCollaborator(@PathVariable(value = "email") long id, 
+			                                           @RequestHeader(value = "token") String token) {
 		List<Collaborator> getall = service.getAllCollaborator(token, id);
 		if(getall != null)
 			return ResponseEntity.ok().body(new Response(" Successfull", 200, getall));
