@@ -1,6 +1,9 @@
 package com.bdlabz.fundoo.serviceImpliment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Date;
+import java.util.zip.Deflater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,7 +55,7 @@ public class UserServiceImpliment implements UserService{
 			System.out.println("token.... "+token);
 			mail.sendVerificationMail(user.getEmail(), token);
 			return true;
-		
+			
 		} catch (Exception  e) {
 			e.printStackTrace();
 		}
@@ -142,5 +145,17 @@ public class UserServiceImpliment implements UserService{
 		return null;
 	}
 
+	@Override
+	public boolean uploadImage(String token, String Image) {
+		long userId = jwt.idDetails(token);
+		User user = repository.findOneById(userId);
+		if(user != null) {
+			repository.uploadImage(Image, userId); 
+			return true;
+		}
+		
+		return false;
+	}
 
+	
 }

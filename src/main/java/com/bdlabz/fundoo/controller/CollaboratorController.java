@@ -37,11 +37,12 @@ public class CollaboratorController {
 			return ResponseEntity.ok().body(new Response(" UnSuccessfull", 400));
 	}
 	
-	@DeleteMapping(value = "/delete/{nid}/{cid}")
+	@DeleteMapping(value = "/delete/{nid}/{cid}/{email}")
 	public ResponseEntity<Response> deleteCollaborator(@PathVariable(value = "nid") long nid,
 			@PathVariable(value = "cid") long cid,
-			@RequestHeader(value = "token") String token) {
-		boolean is_delete = service.deleteCollaborator(token, nid, cid);
+			@RequestHeader(value = "token") String token,
+			@PathVariable( value = "email") String email) {
+		boolean is_delete = service.deleteCollaborator(token, email, cid, nid);
 		if(is_delete == true)
 			return ResponseEntity.ok().body(new Response("Deleted Successfully", 200, is_delete));
 		else
@@ -49,7 +50,7 @@ public class CollaboratorController {
 	}
 	
 	@GetMapping(value = "/getall/{id}")
-	public ResponseEntity<Response> getAllCollaborator(@PathVariable(value = "email") long id, 
+	public ResponseEntity<Response> getAllCollaborator(@PathVariable(value = "id") long id, 
 			                                           @RequestHeader(value = "token") String token) {
 		List<Collaborator> getall = service.getAllCollaborator(token, id);
 		if(getall != null)

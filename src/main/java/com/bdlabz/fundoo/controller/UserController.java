@@ -8,10 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.bdlabz.fundoo.Dto.UserDto;
 import com.bdlabz.fundoo.Dto.UserForgetDto;
 import com.bdlabz.fundoo.Dto.UserLoginDto;
@@ -105,5 +109,20 @@ else
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
 	}
+	
+	@PutMapping( value = "/uploadImage")
+	public ResponseEntity<Response> getallUser( @RequestHeader("token") String token,
+			                                    @RequestParam(value = "imageFile") MultipartFile Image) {
+		boolean is_uploaded = uservice.uploadImage(token, Image.getOriginalFilename());
+		if(is_uploaded == true)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Successfull", 200, is_uploaded));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("UnSuccessfull", 400));
+	}
+	
+	
+	
+	
+	
 	
 }

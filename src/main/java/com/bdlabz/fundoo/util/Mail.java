@@ -25,13 +25,12 @@ public class Mail {
 		mailSender.send(mess);
 	}
 	
-	public void sendNotesColl(String mail,  Notes notes) {
-		System.out.println("all notes: "+ notes);
+	public void sendNotesColl(String mail) {
 		SimpleMailMessage mess = new SimpleMailMessage();
 		mess.setFrom("naveenpagrahara@gmail.com");
 		mess.setTo(mail);
-		mess.setSubject("Notes");
-		mess.setText(notes.toString());
+		mess.setSubject("Email Invite to collaborate....");
+		mess.setText("Note is Collaborated to Your Email Successfully..");
 		mailSender.send(mess);
 
 	}

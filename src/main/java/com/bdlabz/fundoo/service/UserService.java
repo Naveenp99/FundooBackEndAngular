@@ -21,4 +21,6 @@ public interface UserService {
 	
 	User getallUserdetailes( String token);
 	
+	boolean uploadImage( String token, String Image);
+	
 }

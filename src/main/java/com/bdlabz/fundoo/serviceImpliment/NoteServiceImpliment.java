@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bdlabz.fundoo.Dto.NoteDto;
+import com.bdlabz.fundoo.entitymodel.Collaborator;
 import com.bdlabz.fundoo.entitymodel.Label;
 import com.bdlabz.fundoo.entitymodel.Notes;
 import com.bdlabz.fundoo.entitymodel.TempNotes;
 import com.bdlabz.fundoo.entitymodel.User;
+import com.bdlabz.fundoo.repository.CollaboratorRepository;
 import com.bdlabz.fundoo.repository.NotesRepository;
 import com.bdlabz.fundoo.repository.TempNotesRepository;
 import com.bdlabz.fundoo.repository.UserRepository;
@@ -24,6 +26,9 @@ public class NoteServiceImpliment implements NoteService{
 
 	@Autowired
 	TempNotesRepository temprep; 
+	
+	@Autowired
+	CollaboratorRepository colrep;
 	
 	@Autowired
 	UserRepository userrepo;
@@ -363,6 +368,11 @@ public class NoteServiceImpliment implements NoteService{
 		  Notes notes = repos.findOnebyID(noteId);
 			if( notes != null) {
 				User users = userrepo.findOneByuserEmail(email);
+				if (!(user.getEmail().equals(users.getEmail()))) {	
+				Collaborator collab = new Collaborator();
+				collab.setCollaborate_email_to(email);
+				collab.setNoteId(noteId); 
+				colrep.save(collab);
 				if(users != null) { 
 					TempNotes temp = new TempNotes();
 					temp.setTitle(notes.getTitle());
@@ -378,6 +388,7 @@ public class NoteServiceImpliment implements NoteService{
 					temprep.save(temp);
 					return true;
 				}
+			}
 			}
 		}
 		return false;

@@ -10,7 +10,7 @@ public interface CollaboratorService {
 
 	List<Notes> createCollaborator(String token, long noteid, CollaboratorDto dto);
 	
-	boolean deleteCollaborator(String token, long id, long cid);
+	boolean deleteCollaborator(String token, String email, long cid, long noteId);
 	
 	List<Collaborator> getAllCollaborator(String token, long email);
 	

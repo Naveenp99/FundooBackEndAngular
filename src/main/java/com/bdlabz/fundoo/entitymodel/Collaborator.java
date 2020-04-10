@@ -19,12 +19,23 @@ public class Collaborator {
 	@Column(name = "collaborate_to")
 	private String collaborate_email_to;
 
+	@Column(name = "notes_id")
+	private long noteId;
+	
 	@ManyToOne
 	@JsonIgnore
 	private Notes note;
 	
 	
 	
+	public long getNoteId() {
+		return noteId;
+	}
+
+	public void setNoteId(long noteId) {
+		this.noteId = noteId;
+	}
+
 	public Notes getNote() {
 		return note;
 	}

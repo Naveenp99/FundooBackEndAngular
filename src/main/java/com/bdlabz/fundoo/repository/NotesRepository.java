@@ -72,5 +72,8 @@ public interface NotesRepository extends JpaRepository<Notes, Long> {
      @Query( value = "select * from notes_table where user_id = :uId and notes_id = :nId", nativeQuery = true)
      List<Notes> getallNotes( long nId, long uId);
      
-     
+     @Transactional
+     @Modifying
+     @Query( value = "delete from notes_table where user_id = :userId and notes_title  = :title and notes_takeanote  = :takenote", nativeQuery = true)
+ 	Notes deleteNotesByUser( String title, String takenote, long userId);
 }

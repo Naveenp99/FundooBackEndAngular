@@ -2,6 +2,7 @@ package com.bdlabz.fundoo.serviceImpliment;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import com.bdlabz.fundoo.entitymodel.Notes;
 import com.bdlabz.fundoo.entitymodel.User;
 import com.bdlabz.fundoo.repository.CollaboratorRepository;
 import com.bdlabz.fundoo.repository.NotesRepository;
+import com.bdlabz.fundoo.repository.TempNotesRepository;
 import com.bdlabz.fundoo.repository.UserRepository;
 import com.bdlabz.fundoo.service.CollaboratorService;
 import com.bdlabz.fundoo.util.Jwt;
@@ -20,6 +22,9 @@ import com.bdlabz.fundoo.util.Mail;
 @Service
 public class CollaboratorServiceImpliment implements CollaboratorService{
 
+	@Autowired
+	TempNotesRepository temprep;
+	
 	@Autowired
 	UserRepository userrep;
 	
@@ -47,6 +52,7 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 		users.setNotes(note);
 		userrep.save(users);
 		noterep.save(users.getNotes());
+		ma.sendNotesColl(dto.getCollaborate_to_email());
 				return users.getNotes();
 			}
 			
@@ -58,16 +64,19 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 	}
 
 	@Override
-	public boolean deleteCollaborator(String token, long id, long cid) {
+	public boolean deleteCollaborator(String token, String email, long cid, long noteId) {
 		try {
 			User user = userrep.findOneById(jwt.idDetails(token));
-			Notes note = noterep.findByid(id);
-			if(user != null && note != null) {
-			Collaborator coll =	colrep.findById(cid);
-			colrep.delete(coll);
-				return true;
-			}
-			
+			if(user != null) {
+			User users = getUserByEmail(email);
+			System.out.println("Finding User by Email:"+ users);
+			Notes notes = noterep.findOnebyID(noteId); 
+			Notes note = noterep.deleteNotesByUser(notes.getTitle(), notes.getTake_a_note(), users.getId());
+			noterep.save(note);
+			Collaborator collab = colrep.findById(cid);
+			colrep.delete(collab);
+			return true; 
+		}
 		} catch (JWTVerificationException | IllegalArgumentException  e) {
 			e.printStackTrace();
 		}
@@ -81,7 +90,7 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 			User user = userrep.findOneById(mail);
 			Notes notes = noterep.findByid(id);
 			if(user != null && notes != null) {
-				List<Collaborator> list =colrep.findAll();
+				List<Collaborator> list =colrep.getallCollaborator(id);
 				return list;
 			}
 		} catch (JWTVerificationException | IllegalArgumentException  e) {
@@ -90,4 +99,8 @@ public class CollaboratorServiceImpliment implements CollaboratorService{
 		return null;
 	}
 
+  public User getUserByEmail(String email) {
+	User user = userrep.findOneByuserEmail(email);
+	return user;
+	}
 }

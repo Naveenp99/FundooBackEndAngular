@@ -1,6 +1,7 @@
 package com.bdlabz.fundoo.entitymodel;
 
 import java.util.Date;
+
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user_table")
 public class User {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
@@ -25,6 +26,9 @@ public class User {
     private String lastname;
 	@Column(name = "user_email")
     private String email;
+	
+	@Column(name = "user_picname")
+	private String name;
 	
 	@Column(name = "user_password")
     private String password;
@@ -85,5 +89,12 @@ public class User {
 	public void setNotes(List<Notes> notes) {
 		this.notes = notes;
 	}
-    
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+ 
+	
 }
