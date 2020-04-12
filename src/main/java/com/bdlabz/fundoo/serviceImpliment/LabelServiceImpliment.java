@@ -32,7 +32,7 @@ public class LabelServiceImpliment implements LabelService {
 	LabelRepository repos;
 
 	@Override
-	public boolean createLabel(LabelDto dto, String token) {
+	public boolean createLabel(LabelDto dto, String token, long nId) {
 
 		try {
 			long mail = jwt.idDetails(token);
@@ -40,6 +40,7 @@ public class LabelServiceImpliment implements LabelService {
 			if (user != null) {
 				Label label = new Label();
 				label.setTitle(dto.getTitlename());
+				label.setNoteId(nId); 
 				label.setUser(user);
 				repos.save(label);
 				return true;

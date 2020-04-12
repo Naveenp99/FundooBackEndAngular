@@ -7,7 +7,7 @@ import com.bdlabz.fundoo.entitymodel.Notes;
 
 public interface LabelService {
 
-	boolean createLabel(LabelDto dto, String token);
+	boolean createLabel(LabelDto dto, String token, long nId);
 	
 	boolean deleteLabel(String token, long id);
 	

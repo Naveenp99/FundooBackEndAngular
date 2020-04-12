@@ -26,10 +26,11 @@ public class LabelController {
 	@Autowired
 	LabelService service;
 	
-	@PostMapping(value = "/create")
+	@PostMapping(value = "/create/{nId}")
 	public ResponseEntity<Response> createLabel(@RequestBody LabelDto dto,
-			                                    @RequestHeader(value = "token") String token) {
-		     boolean is_created = service.createLabel(dto, token); 
+			                                    @RequestHeader(value = "token") String token,
+			                                    @PathVariable(value = "nId") long nId) {
+		     boolean is_created = service.createLabel(dto, token, nId); 
 		if(is_created == true) 
 			return ResponseEntity.ok().body(new Response("Created Successfully", 200, dto));
 		else
